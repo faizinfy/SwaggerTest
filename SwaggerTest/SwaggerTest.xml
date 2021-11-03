@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SwaggerTest</name>
+    </assembly>
+    <members>
+        <member name="M:SwaggerTest.Controllers.TestController.Get">
+            <summary>
+            Get Store Room Items
+            </summary>
+            <returns></returns>
+            <remarks>List down all matched store room items</remarks>
+        </member>
+        <member name="M:SwaggerTest.Controllers.TestController.GetByName(System.String)">
+            <summary>
+            Get Store Room Items by Name
+            </summary>
+            <returns></returns>
+            <remarks>Search matched store room items</remarks>
+            <param name="name" example="ALSOFT">Store Room Item Description</param>
+        </member>
+        <member name="M:SwaggerTest.Controllers.TestController.GetByCode(System.String,System.String)">
+            <summary>
+            Get Store Room Items by Item Code
+            </summary>
+            <returns></returns>
+            <remarks>Search matched store room items by item code</remarks>
+            <param name="itemcode" example="MPHTC00489">Store Room Item New Code</param>
+            <param name="active" example="Y">is Active (Y/N)</param>
+        </member>
+        <member name="M:SwaggerTest.Controllers.TestController.Post(System.String,System.String,System.Int32)">
+            <summary>
+            Create To Do
+            </summary>
+            <returns></returns>
+            <remarks>Create new To Do list</remarks>
+            <param name="title" example="Title">Title</param>
+            <param name="desc" example="Description">Description</param>
+            <param name="isdone" example="0">is Done (1/0)</param>
+        </member>
+    </members>
+</doc>
