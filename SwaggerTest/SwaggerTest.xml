@@ -38,5 +38,47 @@
             <param name="desc" example="Description">Description</param>
             <param name="isdone" example="0">is Done (1/0)</param>
         </member>
+        <member name="M:SwaggerTest.Controllers.TestController.Put(System.Int32,SwaggerTest.Controllers.ToDo)">
+            <summary>
+            Update To Do
+            </summary>
+            <returns></returns>
+            <remarks>Update To Do list</remarks>
+        </member>
+        <member name="M:SwaggerTest.Controllers.TestController.Delete(System.Int32)">
+            <summary>
+            Delete To Do
+            </summary>
+            <returns></returns>
+            <remarks>Delete To Do list</remarks>
+        </member>
+        <member name="M:SwaggerTest.Controllers.TestController.StartRoll(System.Boolean)">
+            <summary>
+            Roll
+            </summary>
+            <returns></returns>
+            <remarks>Roll</remarks>
+        </member>
+        <member name="M:SwaggerTest.Controllers.TestController.getWeather(System.String)">
+            <summary>
+            Get Weather Temperature
+            </summary>
+            <returns></returns>
+            <remarks>Get Temperature by location name</remarks>
+        </member>
+        <member name="M:SwaggerTest.Controllers.TestController.getCurrency(System.String,System.String,System.Double)">
+            <summary>
+            Currency Converter
+            </summary>
+            <returns></returns>
+            <remarks>Convert value</remarks>
+        </member>
+        <member name="M:SwaggerTest.Controllers.TestController.getISSCurrentLocation">
+            <summary>
+            Get ISS location
+            </summary>
+            <returns></returns>
+            <remarks>ISS current location</remarks>
+        </member>
     </members>
 </doc>

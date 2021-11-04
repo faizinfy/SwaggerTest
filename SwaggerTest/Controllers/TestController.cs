@@ -7,13 +7,15 @@ using System.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using System.Net;
 using System.Net.Http;
-//using System.Web.Http;
+using System.Text.Json;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace SwaggerTest.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class TestController : ControllerBase
     {
@@ -176,6 +178,11 @@ namespace SwaggerTest.Controllers
         }
 
         // PUT api/<TestController>/5
+        /// <summary>
+        /// Update To Do
+        /// </summary>
+        /// <returns></returns>
+        /// <remarks>Update To Do list</remarks>
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] ToDo todo)
         {
@@ -204,6 +211,11 @@ namespace SwaggerTest.Controllers
         }
 
         // DELETE api/<TestController>/5
+        /// <summary>
+        /// Delete To Do
+        /// </summary>
+        /// <returns></returns>
+        /// <remarks>Delete To Do list</remarks>
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
@@ -232,6 +244,11 @@ namespace SwaggerTest.Controllers
 
         }
 
+        /// <summary>
+        /// Roll
+        /// </summary>
+        /// <returns></returns>
+        /// <remarks>Roll</remarks>
         [HttpGet("{roll:bool}")]
         public string StartRoll(bool roll)
         {
@@ -241,6 +258,104 @@ namespace SwaggerTest.Controllers
             else
                 return "🐱‍💻";
         }
+
+        /// <summary>
+        /// Get Weather Temperature
+        /// </summary>
+        /// <returns></returns>
+        /// <remarks>Get Temperature by location name</remarks>
+        [HttpGet("{location}")]
+        public IActionResult getWeather(string location)
+        {
+            var url = $"https://www.metaweather.com/api/location/search/?query=" + location;
+            var webClient = new WebClient();
+            string jsonData = "";
+            string jsonData2 = "";
+            Location jsonObject = new Location();
+
+            try
+            {
+                jsonData = webClient.DownloadString(url);
+                jsonData = jsonData.Replace("[","");
+                jsonData = jsonData.Replace("]","");
+                jsonObject = JsonConvert.DeserializeObject<Location>(jsonData);
+
+                if (jsonObject == null)
+                    return BadRequest("Location not found! 🤦‍♂️");
+
+                var url2 = $"https://www.metaweather.com/api/location/" + jsonObject.woeid;
+                jsonData2 = webClient.DownloadString(url2);
+
+                var jo = JObject.Parse(jsonData2);
+                var id = jo["consolidated_weather"][0]["the_temp"].ToString();
+
+                return Ok("✔ Temperature - " + id);
+            }
+            catch (Exception ex) { 
+                return BadRequest(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Currency Converter
+        /// </summary>
+        /// <returns></returns>
+        /// <remarks>Convert value</remarks>
+        [HttpGet("{base_currency}")]
+        public IActionResult getCurrency(string base_currency, string convert_currency, double value)
+        {
+            var url = $"https://freecurrencyapi.net/api/v2/latest?apikey=fd9ac640-3d37-11ec-b8a0-a9d74dd0bb19&base_currency=" + base_currency;
+            var webClient = new WebClient();
+            string jsonData = "";
+
+            try
+            {
+                jsonData = webClient.DownloadString(url);
+
+                var jo = JObject.Parse(jsonData);
+                var currency_rate = jo["data"][convert_currency].ToString();
+
+                var convertvalue = value * Convert.ToDouble(currency_rate);
+
+                return Ok("✔ Currency Rate - " + convertvalue);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Get ISS location
+        /// </summary>
+        /// <returns></returns>
+        /// <remarks>ISS current location</remarks>
+        [HttpGet]
+        public IActionResult getISSCurrentLocation()
+        {
+            var url = $"http://api.open-notify.org/iss-now.json";
+            var webClient = new WebClient();
+            string jsonData = "";
+
+            try
+            {
+                jsonData = webClient.DownloadString(url);
+
+                var jo = JObject.Parse(jsonData);
+                var latitude = jo["iss_position"]["latitude"].ToString();
+                var longitude = jo["iss_position"]["longitude"].ToString();
+
+                string issurl = "http://maps.google.com/maps?q=" + latitude + "," + longitude;
+
+                return Ok("✔ ISS Location - " + issurl);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
     }
 
     public class StoreItem
@@ -255,5 +370,13 @@ namespace SwaggerTest.Controllers
         public string title { get; set; }
         public string desc { get; set; }
         public int isdone { get; set; }
+    }
+
+    public class Location
+    {
+        public string title { get; set; }
+        public string location_type { get; set; }
+        public int woeid { get; set; }
+        public string latt_long { get; set; }
     }
 }
