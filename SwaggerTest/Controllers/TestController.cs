@@ -355,7 +355,33 @@ namespace SwaggerTest.Controllers
             }
         }
 
+        /// <summary>
+        /// Get IP Address
+        /// </summary>
+        /// <returns></returns>
+        /// <remarks>Current IP Address</remarks>
+        [HttpGet]
+        public IActionResult getCurrentIPAddress()
+        {
+            var url = $"https://api.myip.com";
+            var webClient = new WebClient();
+            string jsonData = "";
 
+            try
+            {
+                jsonData = webClient.DownloadString(url);
+
+                var jo = JObject.Parse(jsonData);
+                var ip = jo["ip"].ToString();
+                var country = jo["country"].ToString();
+
+                return Ok("🔑 IP Server Address - " + ip + "\n" + "🏠 Country - " + country);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 
     public class StoreItem

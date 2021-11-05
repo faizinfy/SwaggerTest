@@ -80,5 +80,12 @@
             <returns></returns>
             <remarks>ISS current location</remarks>
         </member>
+        <member name="M:SwaggerTest.Controllers.TestController.getCurrentIPAddress">
+            <summary>
+            Get IP Address
+            </summary>
+            <returns></returns>
+            <remarks>Current IP Address</remarks>
+        </member>
     </members>
 </doc>
